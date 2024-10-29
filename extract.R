@@ -13,7 +13,7 @@ library(ivs)
 ########################################################################################################################
 ##### STEP 2: Subject selection -----
 df_covid_related_icd <- tbl(mimic_hosp, "d_icd_diagnoses") %>% 
-  filter(str_detect(str_to_lower(long_title), "covid")) %>%
+  filter(str_detect(str_to_lower(long_title), "")) %>%
   collect() 
 vt_covid_related_icd <- df_covid_related_icd %>% pull(icd_code) 
 df_covid_dignoses <- tbl(mimic_hosp, "diagnoses_icd") %>% 
@@ -27,7 +27,7 @@ df_covid_dignoses %>%
   left_join(df_covid_related_icd %>% select(icd_code, long_title), by = "icd_code")
 df_covid_raw <- df_covid_dignoses %>%
   mutate(icd_code = str_trim(icd_code)) %>%  
-  filter(icd_code == "U071")
+  filter(icd_code == "")
 df_covid_raw %>%
   distinct(subject_id)
 df_covid_raw %>% filter(duplicated(hadm_id))
